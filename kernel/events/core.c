@@ -59,6 +59,8 @@
 
 #include <asm/irq_regs.h>
 
+atomic_long_t pebs_interrupt_count;
+
 typedef int (*remote_function_f)(void *);
 
 struct remote_function_call {
@@ -5788,6 +5790,9 @@ static long _perf_ioctl(struct perf_event *event, unsigned int cmd, unsigned lon
 			return err;
 
 		return perf_event_modify_attr(event,  &new_attr);
+	}
+	case PERF_EVENT_IOC_PEBS_INTERRUPT_COUNT: {
+		return atomic_long_xchg(&pebs_interrupt_count, 0);
 	}
 	default:
 		return -ENOTTY;

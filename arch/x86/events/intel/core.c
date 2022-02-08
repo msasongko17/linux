@@ -23,6 +23,7 @@
 #include <asm/cpu_device_id.h>
 
 #include "../perf_event.h"
+extern atomic_long_t pebs_interrupt_count;
 
 /*
  * Intel PerfMon, used on Core and later.
@@ -2882,6 +2883,7 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
 		u64 pebs_enabled = cpuc->pebs_enabled;
 
 		handled++;
+		atomic_long_inc(&pebs_interrupt_count);
 		x86_pmu.drain_pebs(regs, &data);
 		status &= intel_ctrl | GLOBAL_STATUS_TRACE_TOPAPMI;
 
