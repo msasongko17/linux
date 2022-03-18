@@ -1709,6 +1709,7 @@ int x86_pmu_handle_irq(struct pt_regs *regs)
 		if (!x86_perf_event_set_period(event))
 			continue;
 
+		printk(KERN_INFO "in x86_pmu_handle_irq, before perf_event_overflow\n");
 		if (perf_event_overflow(event, &data, regs))
 			x86_pmu_stop(event, 0);
 	}

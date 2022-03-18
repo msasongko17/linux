@@ -508,7 +508,8 @@ struct perf_event_query_bpf {
 #define PERF_EVENT_IOC_QUERY_BPF		_IOWR('$', 10, struct perf_event_query_bpf *)
 #define PERF_EVENT_IOC_MODIFY_ATTRIBUTES	_IOW('$', 11, struct perf_event_attr *)
 #define PERF_EVENT_IOC_PEBS_INTERRUPT_COUNT     _IOW('$', 12, struct perf_event_attr *)
-
+#define PERF_EVENT_IOC_SEND_SIG_INFO_COUNT     _IOW('$', 13, struct perf_event_attr *)
+#define PERF_EVENT_IOC_FORCE_SIG_INFO_COUNT     _IOW('$', 14, struct perf_event_attr *)
 
 enum perf_event_ioc_flags {
 	PERF_IOC_FLAG_GROUP		= 1U << 0,

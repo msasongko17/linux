@@ -60,6 +60,9 @@
  * SLAB caches for signal bits.
  */
 
+extern atomic_long_t send_sig_info_count;
+extern atomic_long_t force_sig_info_count;
+
 static struct kmem_cache *sigqueue_cachep;
 
 int print_fatal_signals __read_mostly;
@@ -1245,6 +1248,7 @@ static int send_signal(int sig, struct kernel_siginfo *info, struct task_struct 
 			force = true;
 		}
 	}
+	//atomic_long_inc(&send_sig_info_count);
 	return __send_signal(sig, info, t, type, force);
 }
 
@@ -1293,6 +1297,8 @@ int do_send_sig_info(int sig, struct kernel_siginfo *info, struct task_struct *p
 	unsigned long flags;
 	int ret = -ESRCH;
 
+	atomic_long_inc(&send_sig_info_count);	
+	printk(KERN_INFO "in do_send_sig_info\n");
 	if (lock_task_sighand(p, &flags)) {
 		ret = send_signal(sig, info, p, type);
 		unlock_task_sighand(p, &flags);
@@ -1354,6 +1360,7 @@ force_sig_info_to_task(struct kernel_siginfo *info, struct task_struct *t,
 
 int force_sig_info(struct kernel_siginfo *info)
 {
+	atomic_long_inc(&force_sig_info_count);
 	return force_sig_info_to_task(info, current, HANDLER_CURRENT);
 }
 
@@ -1440,6 +1447,7 @@ int group_send_sig_info(int sig, struct kernel_siginfo *info,
 	ret = check_kill_permission(sig, info, p);
 	rcu_read_unlock();
 
+	printk(KERN_INFO "in group_send_sig_info\n");
 	if (!ret && sig)
 		ret = do_send_sig_info(sig, info, p, type);
 
@@ -1633,6 +1641,7 @@ int send_sig_info(int sig, struct kernel_siginfo *info, struct task_struct *p)
 	if (!valid_signal(sig))
 		return -EINVAL;
 
+	//atomic_long_inc(&send_sig_info_count);
 	return do_send_sig_info(sig, info, p, PIDTYPE_PID);
 }
 EXPORT_SYMBOL(send_sig_info);
@@ -3911,6 +3920,7 @@ do_send_specific(pid_t tgid, pid_t pid, int sig, struct kernel_siginfo *info)
 		 * probe.  No signal is actually delivered.
 		 */
 		if (!error && sig) {
+			printk(KERN_INFO "in do_send_specific\n");
 			error = do_send_sig_info(sig, info, p, PIDTYPE_PID);
 			/*
 			 * If lock_task_sighand() failed we pretend the task

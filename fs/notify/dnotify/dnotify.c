@@ -112,6 +112,7 @@ static int dnotify_handle_event(struct fsnotify_mark *inode_mark, u32 mask,
 			continue;
 		}
 		fown = &dn->dn_filp->f_owner;
+		printk(KERN_INFO "in dnotify_handle_event\n");
 		send_sigio(fown, dn->dn_fd, POLL_MSG);
 		if (dn->dn_mask & FS_DN_MULTISHOT)
 			prev = &dn->dn_next;

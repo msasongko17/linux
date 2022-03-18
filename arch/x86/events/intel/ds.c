@@ -1910,6 +1910,7 @@ __intel_pmu_pebs_event(struct perf_event *event,
 		 * All but the last records are processed.
 		 * The last one is left to be able to call the overflow handler.
 		 */
+		printk(KERN_INFO "in __intel_pmu_pebs_event, before perf_event_overflow\n");
 		if (perf_event_overflow(event, data, regs))
 			x86_pmu_stop(event, 0);
 	}

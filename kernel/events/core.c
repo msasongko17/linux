@@ -60,6 +60,8 @@
 #include <asm/irq_regs.h>
 
 atomic_long_t pebs_interrupt_count;
+atomic_long_t send_sig_info_count;
+atomic_long_t force_sig_info_count;
 
 typedef int (*remote_function_f)(void *);
 
@@ -5794,6 +5796,15 @@ static long _perf_ioctl(struct perf_event *event, unsigned int cmd, unsigned lon
 	case PERF_EVENT_IOC_PEBS_INTERRUPT_COUNT: {
 		return atomic_long_xchg(&pebs_interrupt_count, 0);
 	}
+
+	case PERF_EVENT_IOC_SEND_SIG_INFO_COUNT: {
+                return atomic_long_xchg(&send_sig_info_count, 0);
+        }
+
+	case PERF_EVENT_IOC_FORCE_SIG_INFO_COUNT: {
+                return atomic_long_xchg(&force_sig_info_count, 0);
+        }
+
 	default:
 		return -ENOTTY;
 	}
@@ -6600,6 +6611,7 @@ static void perf_pending_event(struct irq_work *entry)
 
 	if (event->pending_wakeup) {
 		event->pending_wakeup = 0;
+		printk(KERN_INFO "in perf_pending_event\n");
 		perf_event_wakeup(event);
 	}
 
@@ -9311,6 +9323,7 @@ static int __perf_event_overflow(struct perf_event *event,
 
 	if (*perf_event_fasync(event) && event->pending_kill) {
 		event->pending_wakeup = 1;
+		printk(KERN_INFO "in __perf_event_overflow, before irq_work_queue(&event->pending);\n");
 		irq_work_queue(&event->pending);
 	}
 
@@ -9321,6 +9334,7 @@ int perf_event_overflow(struct perf_event *event,
 			  struct perf_sample_data *data,
 			  struct pt_regs *regs)
 {
+	printk(KERN_INFO "in perf_event_overflow\n");
 	return __perf_event_overflow(event, 1, data, regs);
 }
 

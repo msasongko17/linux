@@ -777,11 +777,13 @@ static void send_sigio_to_task(struct task_struct *p,
 			else
 				si.si_band = mangle_poll(band_table[reason - POLL_IN]);
 			si.si_fd    = fd;
+			printk(KERN_INFO "in send_sigio_to_task 1\n");
 			if (!do_send_sig_info(signum, &si, p, type))
 				break;
 		}
 			fallthrough;	/* fall back on the old plain SIGIO signal */
 		case 0:
+			printk(KERN_INFO "in send_sigio_to_task 2\n");
 			do_send_sig_info(SIGIO, SEND_SIG_PRIV, p, type);
 	}
 }
@@ -1017,6 +1019,7 @@ static void kill_fasync_rcu(struct fasync_struct *fa, int sig, int band)
 			/* Don't send SIGURG to processes which have not set a
 			   queued signum: SIGURG has its own default signalling
 			   mechanism. */
+			printk(KERN_INFO "in kill_fasync_rcu\n");
 			if (!(sig == SIGURG && fown->signum == 0))
 				send_sigio(fown, fa->fa_fd, band);
 		}
