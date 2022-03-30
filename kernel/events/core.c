@@ -59,8 +59,8 @@
 
 #include <asm/irq_regs.h>
 
-atomic_long_t pebs_interrupt_count;
-atomic_long_t pebs_sample_count;
+long pebs_interrupt_count;
+long pebs_sample_count;
 
 typedef int (*remote_function_f)(void *);
 
@@ -5792,11 +5792,15 @@ static long _perf_ioctl(struct perf_event *event, unsigned int cmd, unsigned lon
 
 		return perf_event_modify_attr(event,  &new_attr);
 	}
-	case PERF_EVENT_IOC_PEBS_INTERRUPT_COUNT: {	
-		return atomic_long_xchg(&pebs_interrupt_count, 0);;
+	case PERF_EVENT_IOC_PEBS_INTERRUPT_COUNT: {
+		long pebs_interrupt_count_output = pebs_interrupt_count;
+                pebs_interrupt_count = 0;	
+		return pebs_interrupt_count_output;
 	}
 	case PERF_EVENT_IOC_PEBS_SAMPLE_COUNT: {
-                return atomic_long_xchg(&pebs_sample_count, 0);;
+		long pebs_sample_count_output = pebs_sample_count;
+		pebs_sample_count = 0;
+                return pebs_sample_count_output;
         }	
 	default:
 		return -ENOTTY;
