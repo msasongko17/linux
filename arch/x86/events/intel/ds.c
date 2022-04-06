@@ -19,6 +19,8 @@ DEFINE_PER_CPU_PAGE_ALIGNED(struct debug_store, cpu_debug_store);
 
 #define PEBS_FIXUP_SIZE		PAGE_SIZE
 
+extern long pebs_sample_count;
+
 /*
  * pebs_record_32 for p4 and core not supported
 
@@ -1758,6 +1760,8 @@ __intel_pmu_pebs_event(struct perf_event *event,
 
 	if (!iregs)
 		iregs = &dummy_iregs;
+
+	pebs_sample_count += count;
 
 	while (count > 1) {
 		setup_sample(event, iregs, at, data, regs);
