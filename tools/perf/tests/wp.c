@@ -55,6 +55,7 @@ static int __event(int wp_type, void *wp_addr, unsigned long wp_len)
 	struct perf_event_attr attr;
 
 	get__perf_event_attr(&attr, wp_type, wp_addr, wp_len);
+	fprintf(stderr, "perf_event_open is called in __event 3\n");
 	fd = sys_perf_event_open(&attr, 0, -1, -1,
 				 perf_event_open_cloexec_flag());
 	if (fd < 0)

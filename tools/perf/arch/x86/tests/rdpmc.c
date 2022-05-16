@@ -113,6 +113,8 @@ static int __test__rdpmc(void)
 	sa.sa_flags = 0;
 	sigaction(SIGSEGV, &sa, NULL);
 
+	fprintf(stderr, "perf_event_open is in __test__rdpmc\n");
+
 	fd = sys_perf_event_open(&attr, 0, -1, -1,
 				 perf_event_open_cloexec_flag());
 	if (fd < 0) {

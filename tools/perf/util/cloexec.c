@@ -50,6 +50,7 @@ static int perf_flag_probe(void)
 	 */
 	while (1) {
 		/* check cloexec flag */
+		fprintf(stderr, "perf_event_open is in perf_flag_probe with event number %lx\n", (unsigned long int) attr.config);
 		fd = sys_perf_event_open(&attr, pid, cpu, -1,
 					 PERF_FLAG_FD_CLOEXEC);
 		if (fd < 0 && pid == -1 && errno == EACCES) {
@@ -71,6 +72,7 @@ static int perf_flag_probe(void)
 
 	/* not supported, confirm error related to PERF_FLAG_FD_CLOEXEC */
 	while (1) {
+		fprintf(stderr, "perf_event_open is in perf_flag_probe 2 with event number %lx\n", (unsigned long int) attr.config);
 		fd = sys_perf_event_open(&attr, pid, cpu, -1, 0);
 		if (fd < 0 && pid == -1 && errno == EACCES) {
 			pid = 0;

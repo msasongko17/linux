@@ -58,6 +58,7 @@ static int __event(bool is_x, void *addr, struct perf_event_attr *attr)
 	attr->exclude_kernel = 1;
 	attr->exclude_hv = 1;
 
+	fprintf(stderr, "perf_event_open is called in __event\n");
 	fd = sys_perf_event_open(attr, -1, 0, -1,
 				 perf_event_open_cloexec_flag());
 	if (fd < 0) {

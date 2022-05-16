@@ -98,6 +98,7 @@ static int test__bp_signal_overflow(struct test_suite *test __maybe_unused, int 
 	pe.exclude_kernel = 1;
 	pe.exclude_hv = 1;
 
+	fprintf(stderr, "perf_event_open is called in test__bp_signal_overflow\n");
 	fd = sys_perf_event_open(&pe, 0, -1, -1,
 				 perf_event_open_cloexec_flag());
 	if (fd < 0) {

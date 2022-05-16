@@ -70,6 +70,7 @@ static struct perf_event_attr cycle_attr = {
 
 static int init_cycles(void)
 {
+	fprintf(stderr, "perf_event_open is called in init_cycles\n");
 	cycles_fd = sys_perf_event_open(&cycle_attr, getpid(), -1, -1, perf_event_open_cloexec_flag());
 
 	if (cycles_fd < 0 && errno == ENOSYS) {

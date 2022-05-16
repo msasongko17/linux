@@ -150,6 +150,7 @@ static int test__sigtrap(struct test_suite *test __maybe_unused, int subtest __m
 		goto out;
 	}
 
+	fprintf(stderr, "perf_event_open is called in test__sigtrap\n");
 	fd = sys_perf_event_open(&attr, 0, -1, -1, perf_event_open_cloexec_flag());
 	if (fd < 0) {
 		pr_debug("FAILED sys_perf_event_open(): %s\n", str_error_r(errno, sbuf, sizeof(sbuf)));

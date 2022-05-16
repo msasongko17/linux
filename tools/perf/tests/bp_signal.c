@@ -121,6 +121,7 @@ static int __event(bool is_x, void *addr, int sig)
 	pe.exclude_kernel = 1;
 	pe.exclude_hv = 1;
 
+	fprintf(stderr, "perf_event_open is called in __event 2\n");
 	fd = sys_perf_event_open(&pe, 0, -1, -1,
 				 perf_event_open_cloexec_flag());
 	if (fd < 0) {

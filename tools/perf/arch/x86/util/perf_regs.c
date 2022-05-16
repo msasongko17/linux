@@ -292,6 +292,7 @@ uint64_t arch__intr_reg_mask(void)
 
 	event_attr_init(&attr);
 
+	fprintf(stderr, "perf_event_open is called in arch__intr_reg_mask\n");
 	fd = sys_perf_event_open(&attr, 0, -1, -1, 0);
 	if (fd != -1) {
 		close(fd);

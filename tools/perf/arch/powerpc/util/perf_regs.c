@@ -219,6 +219,7 @@ uint64_t arch__intr_reg_mask(void)
 	 * check if the pmu supports perf extended regs, before
 	 * returning the register mask to sample.
 	 */
+	fprintf(stderr, "perf_event_open is in arch__intr_reg_mask 2\n");
 	fd = sys_perf_event_open(&attr, 0, -1, -1, 0);
 	if (fd != -1) {
 		close(fd);

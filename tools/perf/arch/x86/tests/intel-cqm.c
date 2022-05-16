@@ -81,6 +81,7 @@ int test__intel_cqm_count_nmi_context(struct test_suite *test __maybe_unused, in
 
 	pid = spawn();
 
+	fprintf(stderr, "perf_event_open is in test__intel_cqm_count_nmi_context\n");
 	fd[0] = sys_perf_event_open(&pe, pid, -1, -1, flag);
 	if (fd[0] < 0) {
 		pr_debug("failed to open event\n");
@@ -93,6 +94,7 @@ int test__intel_cqm_count_nmi_context(struct test_suite *test __maybe_unused, in
 	pe.type = evsel->attr.type;
 	pe.config = evsel->attr.config;
 
+	fprintf(stderr, "perf_event_open is in test__intel_cqm_count_nmi_context 2\n");
 	fd[1] = sys_perf_event_open(&pe, pid, -1, fd[0], flag);
 	if (fd[1] < 0) {
 		pr_debug("failed to open event\n");

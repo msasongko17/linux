@@ -29,7 +29,7 @@ static int perf_do_probe_api(setup_probe_fn_t fn, struct perf_cpu cpu, const cha
 	evsel = evlist__first(evlist);
 
 	while (1) {
-		fprintf(stderr, "perf_event_open is called in perf_do_probe_api\n");
+		fprintf(stderr, "perf_event_open is called in perf_do_probe_api 1 with event number: %lx\n", (long unsigned int) evsel->core.attr.config);
 		fd = sys_perf_event_open(&evsel->core.attr, pid, cpu.cpu, -1, flags);
 		if (fd < 0) {
 			if (pid == -1 && errno == EACCES) {
@@ -44,6 +44,7 @@ static int perf_do_probe_api(setup_probe_fn_t fn, struct perf_cpu cpu, const cha
 
 	fn(evsel);
 
+	fprintf(stderr, "perf_event_open is called in perf_do_probe_api 2 with event number: %lx\n", (long unsigned int) evsel->core.attr.config);
 	fd = sys_perf_event_open(&evsel->core.attr, pid, cpu.cpu, -1, flags);
 	if (fd < 0) {
 		if (errno == EINVAL)
@@ -148,6 +149,7 @@ bool perf_can_record_cpu_wide(void)
 	cpu = perf_cpu_map__cpu(cpus, 0);
 	perf_cpu_map__put(cpus);
 
+	fprintf(stderr, "perf_event_open is called in perf_can_record_cpu_wide\n");
 	fd = sys_perf_event_open(&attr, -1, cpu.cpu, -1, 0);
 	if (fd < 0)
 		return false;
@@ -173,6 +175,7 @@ bool perf_can_aux_sample(void)
 	};
 	int fd;
 
+	fprintf(stderr, "perf_event_open is called in perf_can_aux_sample\n");
 	fd = sys_perf_event_open(&attr, -1, 0, -1, 0);
 	/*
 	 * If the kernel attribute is big enough to contain aux_sample_size
