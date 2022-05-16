@@ -618,6 +618,7 @@ static irqreturn_t arm_spe_pmu_irq_handler(int irq, void *dev)
 	 * Ensure perf callbacks have completed, which may disable the
 	 * profiling buffer in response to a TRUNCATION flag.
 	 */
+	printk(KERN_INFO "an ARM SPE interrupt is detected\n");
 	irq_work_run();
 
 	switch (act) {
