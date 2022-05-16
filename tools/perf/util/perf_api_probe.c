@@ -29,6 +29,7 @@ static int perf_do_probe_api(setup_probe_fn_t fn, struct perf_cpu cpu, const cha
 	evsel = evlist__first(evlist);
 
 	while (1) {
+		fprintf(stderr, "perf_event_open is called in perf_do_probe_api\n");
 		fd = sys_perf_event_open(&evsel->core.attr, pid, cpu.cpu, -1, flags);
 		if (fd < 0) {
 			if (pid == -1 && errno == EACCES) {

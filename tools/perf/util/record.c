@@ -256,6 +256,7 @@ bool evlist__can_select_event(struct evlist *evlist, const char *str)
 	}
 
 	while (1) {
+		fprintf(stderr, "perf_event_open is called in evlist__can_select_event\n");
 		fd = sys_perf_event_open(&evsel->core.attr, pid, cpu.cpu, -1,
 					 perf_event_open_cloexec_flag());
 		if (fd < 0) {

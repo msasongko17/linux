@@ -571,6 +571,7 @@ static int self_open_counters(struct perf_sched *sched, unsigned long cur_task)
 	attr.config = PERF_COUNT_SW_TASK_CLOCK;
 
 force_again:
+	fprintf(stderr, "perf_event_open is called in self_open_counters\n");
 	fd = sys_perf_event_open(&attr, 0, -1, -1,
 				 perf_event_open_cloexec_flag());
 

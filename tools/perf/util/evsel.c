@@ -2031,6 +2031,7 @@ retry_open:
 			pr_debug2_peo("sys_perf_event_open: pid %d  cpu %d  group_fd %d  flags %#lx",
 				pid, perf_cpu_map__cpu(cpus, idx).cpu, group_fd, evsel->open_flags);
 
+			fprintf(stderr, "perf_event_open is called in evsel__open_cpu\n");
 			fd = sys_perf_event_open(&evsel->core.attr, pid,
 						perf_cpu_map__cpu(cpus, idx).cpu,
 						group_fd, evsel->open_flags);
