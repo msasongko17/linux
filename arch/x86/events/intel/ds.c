@@ -1761,7 +1761,7 @@ __intel_pmu_pebs_event(struct perf_event *event,
 	if (!iregs)
 		iregs = &dummy_iregs;
 
-	pebs_sample_count += count;
+	//pebs_sample_count += count;
 
 	while (count > 1) {
 		setup_sample(event, iregs, at, data, regs);
@@ -1823,7 +1823,7 @@ static void intel_pmu_drain_pebs_core(struct pt_regs *iregs, struct perf_sample_
 			intel_pmu_save_and_restart_reload(event, 0);
 		return;
 	}
-
+	//pebs_sample_count += n;
 	__intel_pmu_pebs_event(event, iregs, data, at, top, 0, n,
 			       setup_pebs_fixed_sample_data);
 }
@@ -1954,6 +1954,7 @@ static void intel_pmu_drain_pebs_nhm(struct pt_regs *iregs, struct perf_sample_d
 		}
 
 		if (counts[bit]) {
+			pebs_sample_count += counts[bit];
 			__intel_pmu_pebs_event(event, iregs, data, base,
 					       top, bit, counts[bit],
 					       setup_pebs_fixed_sample_data);
