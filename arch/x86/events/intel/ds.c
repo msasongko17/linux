@@ -19,7 +19,7 @@ DEFINE_PER_CPU_PAGE_ALIGNED(struct debug_store, cpu_debug_store);
 
 #define PEBS_FIXUP_SIZE		PAGE_SIZE
 
-extern long pebs_sample_count;
+extern atomic_long_t pebs_sample_count;
 
 /*
  * pebs_record_32 for p4 and core not supported
@@ -1954,7 +1954,8 @@ static void intel_pmu_drain_pebs_nhm(struct pt_regs *iregs, struct perf_sample_d
 		}
 
 		if (counts[bit]) {
-			pebs_sample_count += counts[bit];
+			//pebs_sample_count += counts[bit];
+			atomic_long_add(counts[bit], &pebs_sample_count);
 			__intel_pmu_pebs_event(event, iregs, data, base,
 					       top, bit, counts[bit],
 					       setup_pebs_fixed_sample_data);

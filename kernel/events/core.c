@@ -58,7 +58,7 @@
 
 #include <asm/irq_regs.h>
 
-long pebs_sample_count;
+atomic_long_t pebs_sample_count;
 
 typedef int (*remote_function_f)(void *);
 
@@ -5552,9 +5552,10 @@ static long _perf_ioctl(struct perf_event *event, unsigned int cmd, unsigned lon
 	}
 	
         case PERF_EVENT_IOC_PEBS_SAMPLE_COUNT: {
-                long pebs_sample_count_output = pebs_sample_count;
-                pebs_sample_count = 0;
-                return pebs_sample_count_output;
+                //long pebs_sample_count_output = pebs_sample_count;
+                //pebs_sample_count = 0;
+                //return pebs_sample_count_output;
+                return atomic_long_xchg(&pebs_sample_count, 0);
         }
 
 	default:
